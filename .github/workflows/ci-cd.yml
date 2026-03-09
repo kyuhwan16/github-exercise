@@ -1,0 +1,30 @@
+name: Week 5 Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  start:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Start
+        run: echo "Pipeline Started"
+
+  approval:
+    needs: start
+    runs-on: ubuntu-latest
+    steps:
+      - name: Manual Approval
+        uses: trstringer/manual-approval@v1
+        with:
+          secret: ${{ secrets.GITHUB_TOKEN }}
+          approvers: kyuhwan16
+
+  deploy:
+    needs: approval
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy
+        run: echo "Deployment Finished"
